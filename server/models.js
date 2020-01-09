@@ -23,3 +23,7 @@ module.exports.markHelpful = review_id => {
 module.exports.addReview = review => {
   return db.any();
 };
+
+module.exports.getMetaData = review_id => {
+  return db.any();
+};

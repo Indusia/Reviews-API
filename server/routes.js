@@ -5,7 +5,8 @@ const {
   getPhotosByReview,
   reportReview,
   markHelpful,
-  addReview
+  addReview,
+  getMetaData
 } = require("./models");
 
 router.get("/reviews/:product_id/list", (req, res) => {
@@ -83,7 +84,11 @@ router.get("/reviews/:product_id/list", (req, res) => {
   }
 });
 
-router.get("/reviews/:product_id/meta", (req, res) => {});
+router.get("/reviews/:product_id/meta", (req, res) => {
+  getMetaData()
+    .then(() => {})
+    .catch(() => {});
+});
 
 router.post("/reviews/:product_id", (req, res) => {
   addReview()
@@ -92,8 +97,8 @@ router.post("/reviews/:product_id", (req, res) => {
 });
 
 router.put("/reviews/helpful/:review_id", (req, res) => {
-  if (req.params.product_id > 0) {
-    markHelpful()
+  if (req.params.review_id > 0) {
+    markHelpful(req.params.review_id)
       .then(() => {
         res.sendStatus(204);
       })
@@ -107,8 +112,9 @@ router.put("/reviews/helpful/:review_id", (req, res) => {
 });
 
 router.put("/reviews/report/:review_id", (req, res) => {
-  if (req.params.product_id > 0) {
-    reportReview()
+  console.log(req.params.review_id);
+  if (req.params.review_id > 0) {
+    reportReview(req.params.review_id)
       .then(() => {
         res.sendStatus(204);
       })
