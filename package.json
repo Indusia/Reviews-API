@@ -4,8 +4,9 @@
   "description": "Reviews API",
   "main": "server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js"
+    "test": "mocha",
+    "start": "node server/index.js",
+    "start-dev": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,10 @@
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
     "pg-promise": "^10.3.2"
+  },
+  "devDependencies": {
+    "axios": "^0.19.1",
+    "mocha": "^7.0.0",
+    "nodemon": "^2.0.2"
   }
 }
