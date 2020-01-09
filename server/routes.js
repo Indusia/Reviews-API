@@ -92,9 +92,18 @@ router.post("/reviews/:product_id", (req, res) => {
 });
 
 router.put("/reviews/helpful/:review_id", (req, res) => {
-  markHelpful()
-    .then(() => {})
-    .catch(() => {});
+  if (req.params.product_id > 0) {
+    markHelpful()
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch(err => {
+        // console.log(`Error: ${err}`);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.put("/reviews/report/:review_id", (req, res) => {
