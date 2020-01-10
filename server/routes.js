@@ -1,12 +1,13 @@
 const router = require("express").Router();
-const { dataSort } = require("./helpers");
+const { dataSort, countRAndR, parseCharacteristics } = require("./helpers");
 const {
   getReviewsByID,
   getPhotosByReview,
   reportReview,
   markHelpful,
   addReview,
-  getMetaData
+  getRAndR,
+  getAverageRatings
 } = require("./models");
 
 router.get("/reviews/:product_id/list", (req, res) => {
@@ -85,9 +86,33 @@ router.get("/reviews/:product_id/list", (req, res) => {
 });
 
 router.get("/reviews/:product_id/meta", (req, res) => {
-  getMetaData()
-    .then(() => {})
-    .catch(() => {});
+  if (req.params.product_id > 0) {
+    const queries = [];
+    queries.push(getRAndR(req.params.product_id));
+    queries.push(getAverageRatings(req.params.product_id));
+
+    Promise.all(queries)
+      .then(results => {
+        const counters = countRAndR(results[0]);
+        const characteristics = parseCharacteristics(results[1]);
+
+        const metadataObj = {
+          product_id: req.params.product_id,
+          ratings: counters.ratings,
+          recommended: counters.recommended,
+          characteristics: characteristics
+        };
+
+        res.status(200);
+        res.json(metadataObj);
+      })
+      .catch(err => {
+        // console.log(`Error: ${err}`);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.post("/reviews/:product_id", (req, res) => {
@@ -112,7 +137,6 @@ router.put("/reviews/helpful/:review_id", (req, res) => {
 });
 
 router.put("/reviews/report/:review_id", (req, res) => {
-  console.log(req.params.review_id);
   if (req.params.review_id > 0) {
     reportReview(req.params.review_id)
       .then(() => {
