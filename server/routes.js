@@ -1,5 +1,10 @@
 const router = require("express").Router();
-const { dataSort, countRAndR, parseCharacteristics } = require("./helpers");
+const {
+  dataSort,
+  countRAndR,
+  parseCharacteristics,
+  isDataValid
+} = require("./helpers");
 const {
   getReviewsByID,
   getPhotosByReview,
@@ -116,9 +121,18 @@ router.get("/reviews/:product_id/meta", (req, res) => {
 });
 
 router.post("/reviews/:product_id", (req, res) => {
-  addReview()
-    .then(() => {})
-    .catch(() => {});
+  if (req.params.product_id > 0 && isDataValid(req.body)) {
+    addReview(req.body, req.params.product_id)
+      .then(() => {
+        res.sendStatus(201);
+      })
+      .catch(err => {
+        // console.log(`Error: ${err}`);
+        res.sendStatus(500);
+      });
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.put("/reviews/helpful/:review_id", (req, res) => {

@@ -1,38 +1,73 @@
 const db = require("../db");
 
-module.exports.getReviewsByID = product_id => {
+module.exports.getReviewsByID = productId => {
   return db.any(
     `SELECT * FROM reviews 
-      WHERE product_id = ${product_id} 
+      WHERE product_id = ${productId} 
       AND reported = false`
   );
 };
 
-module.exports.getPhotosByReview = review_id => {
+module.exports.getPhotosByReview = reviewId => {
   return db.any(
     `SELECT * FROM photos 
-      WHERE review_id = ${review_id}`
+      WHERE review_id = ${reviewId}`
   );
 };
 
-module.exports.reportReview = review_id => {
+module.exports.reportReview = reviewId => {
   return db.any(
     `UPDATE reviews 
       SET reported = true 
-      WHERE id = ${review_id}`
+      WHERE id = ${reviewId}`
   );
 };
 
-module.exports.markHelpful = review_id => {
+module.exports.markHelpful = reviewId => {
   return db.any(
     `UPDATE reviews 
       SET helpfulness = helpfulness + 1 
-      WHERE id = ${review_id}`
+      WHERE id = ${reviewId}`
   );
 };
 
-module.exports.addReview = review => {
-  return db.any();
+module.exports.addReview = (review, productId) => {
+  const recommend = review.recommend ? "1" : "0";
+  let characteristicsRatingQueries = "";
+  let insertPhotoQueries = "";
+
+  // loop through all characteristics
+  for (const charID in review.characteristics) {
+    characteristicsRatingQueries += `
+    INSERT INTO ratings (value, characteristic_id, review_id)
+      SELECT  ${review.characteristics[charID]}, ${charID}, (currval('reviews_id_seq'))
+      WHERE (${charID} IN 
+        (SELECT id FROM characteristics 
+          WHERE product_id = ${productId}));
+          `;
+  }
+
+  // loop through all photos
+  for (const photo of review.photos) {
+    insertPhotoQueries += `
+    INSERT INTO photos (url, review_id)
+      VALUES ('${photo}', (currval('reviews_id_seq')));
+      `;
+  }
+
+  const query = `
+    BEGIN;
+    LOCK TABLE reviews;
+    LOCK TABLE photos;
+    LOCK TABLE ratings;
+
+    INSERT INTO reviews (rating, summary, recommend, body, reviewer_name, reviewer_email, product_id)
+      VALUES (${review.rating}, '${review.summary}', ${recommend}, '${review.body}', '${review.name}', '${review.email}', ${productId});
+    ${characteristicsRatingQueries}
+    ${insertPhotoQueries}
+    COMMIT;`;
+
+  return db.any(query);
 };
 
 module.exports.getRAndR = product_id => {

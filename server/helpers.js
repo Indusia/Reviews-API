@@ -77,3 +77,44 @@ module.exports.parseCharacteristics = data => {
 
   return cObj;
 };
+
+module.exports.isDataValid = data => {
+  if (typeof data.rating !== "number" || data.rating < 1 || data.rating > 5) {
+    return false;
+  }
+
+  if (typeof data.summary !== "string" || data.summary.length < 1) {
+    return false;
+  }
+
+  if (typeof data.body !== "string" || data.body.length < 1) {
+    return false;
+  }
+
+  if (typeof data.recommend !== "boolean") {
+    return false;
+  }
+
+  if (typeof data.name !== "string" || data.name.length < 1) {
+    return false;
+  }
+
+  if (typeof data.email !== "string" || data.email.length < 1) {
+    return false;
+  }
+
+  for (const photo of data.photos) {
+    if (typeof photo !== "string" || photo.length < 1) {
+      return false;
+    }
+  }
+
+  for (const charID in data.characteristics) {
+    if (data.characteristics[charID] > 5 || data.characteristics[charID] < 1) {
+      return false;
+    }
+  }
+
+  console.log("Valid Input");
+  return true;
+};
