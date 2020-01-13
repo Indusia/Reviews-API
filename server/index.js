@@ -1,12 +1,13 @@
 const express = require("express");
 const parser = require("body-parser");
 const router = require("./routes.js");
-const logger = require("morgan");
+// const logger = require("morgan");
+
 const app = express();
 
-const PORT = 8080;
+const PORT = process.env.SERVER_PORT || 3003;
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(parser.json());
 app.use("/", router);
 
