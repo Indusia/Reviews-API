@@ -15,6 +15,28 @@ const {
   getAverageRatings
 } = require("./models");
 
+/* The route gathers review data of a product and sends it back.
+
+Sorting options: Newest, Helpfulness, Relevance; Default is Relevance
+
+Data sent back:
+product_id - The number of the product
+page - The page of the reviews searched for
+count - The number of reviews listed on each page
+results - All the reviews found within the range of the page/count
+
+For each review: 
+review_id - Based on the database entry
+rating - A number between 1-5
+summary - A quick summary/title of the review
+recommend - If the product was recommended by the user
+response - A response to the review, from the seller
+body - The text of the review
+date - The date the review was submitted
+reviewer_name - The username of the reviewer
+helpfulness - The number of times the review was marked helpful
+photos - An array of all the photo: ID, URL */
+
 router.get("/reviews/:product_id/list", (req, res) => {
   if (req.params.product_id > 0) {
     const page = req.query.page || 0;
@@ -90,6 +112,15 @@ router.get("/reviews/:product_id/list", (req, res) => {
   }
 });
 
+/* The Route gathers meta data, based on product ID and sends it back.
+
+Data sent back is a JSON object with the info:
+
+Product ID
+A count of all ratings between 1-5 for the product
+A count of the number of reviews that did and did't recommend the product
+The characteristics of the product and average ratings for each */
+
 router.get("/reviews/:product_id/meta", (req, res) => {
   if (req.params.product_id > 0) {
     const queries = [];
@@ -120,6 +151,10 @@ router.get("/reviews/:product_id/meta", (req, res) => {
   }
 });
 
+/* Checks if the data requested to be posted into the DB is valid.
+
+The route runs a query that inserts data into the necessary tables. */
+
 router.post("/reviews/:product_id", (req, res) => {
   if (req.params.product_id > 0 && isDataValid(req.body)) {
     addReview(req.body, req.params.product_id)
@@ -134,6 +169,11 @@ router.post("/reviews/:product_id", (req, res) => {
     res.sendStatus(404);
   }
 });
+
+/*  The route runs a query that increments the helpfulness counter of a review.
+
+Helpfulness count impacts the sorting algorightms based on:
+Relevance, Helpfulness */
 
 router.put("/reviews/helpful/:review_id", (req, res) => {
   if (req.params.review_id > 0) {
@@ -150,6 +190,10 @@ router.put("/reviews/helpful/:review_id", (req, res) => {
   }
 });
 
+/* Route runs a query that updates and marks a review as reported.
+
+Reported reviews don't show up on any GET requests when queried. */
+
 router.put("/reviews/report/:review_id", (req, res) => {
   if (req.params.review_id > 0) {
     reportReview(req.params.review_id)
@@ -163,6 +207,12 @@ router.put("/reviews/report/:review_id", (req, res) => {
   } else {
     res.sendStatus(404);
   }
+});
+
+// Required to run tests on loader.io
+
+router.get("/loaderio-687ddfe8a063d0efb98de2928ad7eded/", (req, res) => {
+  res.send("loaderio-687ddfe8a063d0efb98de2928ad7eded");
 });
 
 module.exports = router;
