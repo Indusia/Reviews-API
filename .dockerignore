@@ -1,1 +1,5 @@
+docker-compose.yml
+pgdata
 node_modules
+
+Dockerfile
