@@ -11,4 +11,6 @@ const PORT = process.env.SERVER_PORT || 3003;
 app.use(parser.json());
 app.use("/", router);
 
+console.log(process.env.LOADER);
+
 app.listen(PORT, () => console.log(`Connected on PORT: ${PORT}`));

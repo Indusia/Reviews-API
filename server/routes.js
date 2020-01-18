@@ -211,8 +211,8 @@ router.put("/reviews/report/:review_id", (req, res) => {
 
 // Required to run tests on loader.io
 
-router.get("/loaderio-687ddfe8a063d0efb98de2928ad7eded/", (req, res) => {
-  res.send("loaderio-687ddfe8a063d0efb98de2928ad7eded");
+router.get(`/${process.env.LOADER}/`, (req, res) => {
+  res.send(process.env.LOADER);
 });
 
 module.exports = router;

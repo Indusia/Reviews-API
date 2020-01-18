@@ -2,12 +2,20 @@
 
 const pgp = require("pg-promise")({});
 
+// const connection = {
+//   host: process.env.HOST || "localhost",
+//   port: process.env.DB_PORT || 5432,
+//   database: process.env.DB || "reviews",
+//   user: process.env.USER || "david",
+//   password: process.env.PASSWORD || null
+// };
+
 const connection = {
-  host: process.env.HOST || "localhost",
+  host: process.env.HOST || "18.216.92.214",
   port: process.env.DB_PORT || 5432,
   database: process.env.DB || "reviews",
-  user: process.env.USER || "david",
-  password: process.env.PASSWORD || null
+  user: process.env.USER || "reviews_pg",
+  password: process.env.PASSWORD || "passw0rd"
 };
 
 let db = pgp(connection);
