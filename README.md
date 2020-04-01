@@ -10,7 +10,7 @@ This application is an API designed to manage and route requests to a PostgreSQL
 
 | Parameter | Type    | Description                                                                              |
 |-----------|---------|------------------------------------------------------------------------------------------|
-| productId | integer | Indicator for which reviews to retrieve from the database. (Required)                    |
+| productId | integer | Indicator for which reviews to retrieve from the database. **Required**                |
 | page      | integer | Determines which page of reviews to retrieve. Default is 1.                              |
 | count     | integer | Determines the number of reviews to retrieve per page. Default is 5.                     |
 | sort      | string  | Determines the sorting of reviews. Default = 'relevance' Options = ['newest', 'helpful'] |
@@ -21,7 +21,7 @@ This application is an API designed to manage and route requests to a PostgreSQL
 
 | Parameter | Type    | Description                                                          |
 |-----------|---------|----------------------------------------------------------------------|
-| productId | integer | The product from which review metadata will be retrieved. (Required) |
+| productId | integer | The product from which review metadata will be retrieved. **Required** |
 
 ### Post Review:
 
@@ -29,20 +29,20 @@ This application is an API designed to manage and route requests to a PostgreSQL
 
 | Parameter | Type    | Description                                                                 |
 |-----------|---------|-----------------------------------------------------------------------------|
-| productID | integer | Indicates which product the posted review will be associated to. (Required) |
+| productID | integer | Indicates which product the posted review will be associated to. **Required** |
 
 **Body:**
 
 | Parameter       | Type     | Description                                                                                                                                                                                                                            |
 |-----------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| body            | string   | Full text of the review. (Required)                                                                                                                                                                                                    |
-| characteristics | object   | Ratings of characteristics associated with the product. Key is characteristic ID  associated with product. Value should be an integer rating between 1 and 5.Should  be formatted as follows: {'1' : 5, '2' : 4, '3' : ...} (Required) |
-| email           | string   | Email of user associated with review. (Required)                                                                                                                                                                                       |
+| body            | string   | Full text of the review. **Required**                                                                                                                                                                                                    |
+| characteristics | object   | Ratings of characteristics associated with the product. Key is characteristic ID  associated with product. Value should be an integer rating between 1 and 5.Should  be formatted as follows: {'1' : 5, '2' : 4, '3' : ...} **Required** |
+| email           | string   | Email of user associated with review. **Required**                                                                                                                                                                                       |
 | photos          | [string] | Array of image urls associated with review.                                                                                                                                                                                            |
-| rating          | integer  | Rating of review. Should be integer between 1 and 5. (Required)                                                                                                                                                                        |
-| recommend       | boolean  | Indicates whether reviewer recommends product. (Required)                                                                                                                                                                              |
-| reviewerName    | string   | Name or pseudonym of reviewer. (Required)                                                                                                                                                                                              |
-| summary         | string   | Brief description of review. (Required)                                                                                                                                                                                                |
+| rating          | integer  | Rating of review. Should be integer between 1 and 5. **Required**                                                                                                                                                                        |
+| recommend       | boolean  | Indicates whether reviewer recommends product. **Required**                                                                                                                                                                              |
+| reviewerName    | string   | Name or pseudonym of reviewer. **Required**                                                                                                                                                                                              |
+| summary         | string   | Brief description of review. **Required**                                                                                                                                                                                                |
 
 ### Mark Review Helpful:
 
@@ -50,7 +50,7 @@ This application is an API designed to manage and route requests to a PostgreSQL
 
 | Parameter | Type    | Description                                                 |
 |-----------|---------|-------------------------------------------------------------|
-| reviewId  | integer | Indicates which review to increment helpfulness. (Required) |
+| reviewId  | integer | Indicates which review to increment helpfulness. **Required** |
 
 ### Report Review:
 
@@ -58,5 +58,5 @@ This application is an API designed to manage and route requests to a PostgreSQL
 
 | Parameter | Type    | Description                                            |
 |-----------|---------|--------------------------------------------------------|
-| reviewId  | integer | Indicates which review to mark as reported. (Required) |
+| reviewId  | integer | Indicates which review to mark as reported. **Required** |
 
