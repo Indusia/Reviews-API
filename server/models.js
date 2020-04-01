@@ -6,25 +6,6 @@ module.exports.getReviewsByID = productId => {
       WHERE product_id = ${productId}
       AND reported = false`
   );
-
-  // Using pg-pool instead of pg-promise
-
-  // return pool.connect().then(client => {
-  //   return client
-  //     .query(
-  //       `SELECT * FROM reviews
-  //       WHERE product_id = ${productId}
-  //       AND reported = false`
-  //     )
-  //     .then(data => {
-  //       client.release();
-  //       return data.rows;
-  //     })
-  //     .catch(err => {
-  //       client.release();
-  //       console.log(`Error: ${err}`);
-  //     });
-  // });
 };
 
 module.exports.getPhotosByReview = reviewId => {
@@ -32,24 +13,6 @@ module.exports.getPhotosByReview = reviewId => {
     `SELECT id, url  FROM photos
       WHERE review_id = ${reviewId}`
   );
-
-  // Using pg-pool instead of pg-promise
-
-  // return pool.connect().then(client => {
-  //   return client
-  //     .query(
-  //       `SELECT id, url  FROM photos
-  //       WHERE review_id = ${reviewId}`
-  //     )
-  //     .then(data => {
-  //       client.release();
-  //       return data.rows;
-  //     })
-  //     .catch(err => {
-  //       client.release();
-  //       console.log(`Error: ${err}`);
-  //     });
-  // });
 };
 
 module.exports.reportReview = reviewId => {
@@ -138,6 +101,43 @@ module.exports.getAverageRatings = product_id => {
 // Queries necessary to get meta data using pg-pool.
 
 /* 
+module.exports.getReviewsByID = productId => {
+  return pool.connect().then(client => {
+    return client
+      .query(
+        `SELECT * FROM reviews
+        WHERE product_id = ${productId}
+        AND reported = false`
+      )
+      .then(data => {
+        client.release();
+        return data.rows;
+      })
+      .catch(err => {
+        client.release();
+        console.log(`Error: ${err}`);
+      });
+  });
+};
+
+module.exports.getPhotosByReview = reviewId => {
+  return pool.connect().then(client => {
+    return client
+      .query(
+        `SELECT id, url  FROM photos
+        WHERE review_id = ${reviewId}`
+      )
+      .then(data => {
+        client.release();
+        return data.rows;
+      })
+      .catch(err => {
+        client.release();
+        console.log(`Error: ${err}`);
+      });
+  });
+};
+
 module.exports.getRAndR = product_id => {
   return pool.connect().then(client => {
     return client
