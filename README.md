@@ -1,6 +1,6 @@
 # Reviews API
 
-This application is an API designed to manage and route requests to a PostgreSQL. The routes can process GET, POST, and PUT requests to retrieve data based on product ID, update parts of the review data, and add new reviews to the database. The database current manages reviews submitted base on over 1 million products and has been designed for use for an eCommerce platform.
+This application is a RESTful API is connected to a PostgreSQL database. The routes will allow access to retrieve data based on input parameters, update certain pieces of data, and add new reviews to the database. The database currently manages reviews submitted base on over 1 million products and has been designed to be used with an eCommerce platform in mind.
 
 ## Routes:
 
